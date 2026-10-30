@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#15191d">
+  <meta name="description" content="A lightweight, local-first library for organizing PBR materials and texture maps for 3D workflows.">
+  <title>Material Vault | PBR Texture Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#top" aria-label="Material Vault home">
+        <span class="brand-mark">M</span>
+        <span><strong>MATERIAL</strong><small>VAULT / ARCHVIZ</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <a class="nav-link active" href="#library"><span class="nav-icon">▦</span> Material library <span class="nav-count" id="navCount">0</span></a>
+        <a class="nav-link" href="#workflow"><span class="nav-icon">◫</span> PBR workflow</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="local-card">
+          <span class="local-dot"></span>
+          <div><strong>Local-first storage</strong><small>Your materials stay in this browser.</small></div>
+        </div>
+        <div class="sidebar-foot">BUILT FOR 3D ARTISTS<br>VERSION 1.0.0</div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="top">
+      <header class="topbar">
+        <div class="crumb">WORKSPACE <span>/</span> <b>LIBRARY</b></div>
+        <div class="top-actions">
+          <button class="btn btn-quiet" id="importBtn" type="button">Import library</button>
+          <input id="importInput" type="file" accept="application/json,.json" hidden>
+          <button class="btn btn-primary" id="addBtn" type="button"><span>＋</span> Add material</button>
+        </div>
+      </header>
+
+      <section class="hero" id="library">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> YOUR MATERIAL WORKSPACE</div>
+          <h1>Materials, <em>under control.</em></h1>
+          <p class="hero-copy">A tidy home for your PBR textures. Track maps, keep references close, and know exactly what each material is missing.</p>
+        </div>
+        <div class="hero-mark" aria-hidden="true"><div class="hero-ring ring-one"></div><div class="hero-ring ring-two"></div><div class="hero-core">PBR<br><span>MAPS</span></div></div>
+      </section>
+
+      <section class="stats-grid" aria-label="Library overview">
+        <article class="stat-card"><div class="stat-top"><span>TOTAL MATERIALS</span><span class="stat-symbol">▦</span></div><strong id="totalStat">0</strong><small>In your library</small></article>
+        <article class="stat-card"><div class="stat-top"><span>COMPLETE SETS</span><span class="stat-symbol">✓</span></div><strong id="completeStat">0</strong><small>All core maps present</small></article>
+        <article class="stat-card"><div class="stat-top"><span>NEEDS ATTENTION</span><span class="stat-symbol">◌</span></div><strong id="attentionStat">0</strong><small>Missing one or more maps</small></article>
+        <article class="stat-card accent-stat"><div class="stat-top"><span>LIBRARY HEALTH</span><span class="stat-symbol">↗</span></div><strong id="healthStat">—</strong><small>Core map completeness</small><div class="health-track"><span id="healthBar"></span></div></article>
+      </section>
+
+      <section class="library-section">
+        <div class="section-heading">
+          <div><div class="eyebrow">COLLECTION</div><h2>Your materials <span id="resultCount">(0)</span></h2></div>
+          <button class="text-button" id="exportBtn" type="button">Export library <span>↗</span></button>
+        </div>
+        <div class="toolbar">
+          <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search materials, tags, notes…" autocomplete="off"><kbd> / </kbd></label>
+          <select id="categoryFilter" aria-label="Filter by category">
+            <option value="all">All categories</option>
+            <option>Wood</option><option>Stone</option><option>Fabric</option><option>Tile</option><option>Metal</option><option>Concrete</option><option>Other</option>
+          </select>
+          <select id="statusFilter" aria-label="Filter by map completeness">
+            <option value="all">All map statuses</option><option value="complete">Complete sets</option><option value="incomplete">Missing maps</option>
+          </select>
+        </div>
+        <div class="chip-row" id="quickFilters" aria-label="Quick filters">
+          <button class="filter-chip selected" data-filter="all" type="button">All materials</button>
+          <button class="filter-chip" data-filter="complete" type="button">Complete PBR</button>
+          <button class="filter-chip" data-filter="incomplete" type="button">Needs maps</button>
+        </div>
+        <div class="materials-grid" id="materialsGrid" aria-live="polite"></div>
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">＋</div><h3>Your library starts here.</h3>
+          <p>Add a material, mark the maps you have, and keep your texture collection organized.</p>
+          <button class="btn btn-primary" id="emptyAddBtn" type="button">Add your first material</button>
+        </div>
+      </section>
+
+      <section class="workflow-section" id="workflow">
+        <div class="workflow-head"><div><div class="eyebrow">QUICK REFERENCE</div><h2>Know your PBR maps.</h2></div><p>A simple checklist for a consistent material setup in 3ds Max, V-Ray, or Corona.</p></div>
+        <div class="map-reference-grid">
+          <article class="map-ref"><span class="map-swatch swatch-color"></span><div><strong>Base Color</strong><p>Surface colour information. Keep lighting and shadows out of the texture.</p></div><b>01</b></article>
+          <article class="map-ref"><span class="map-swatch swatch-rough"></span><div><strong>Roughness</strong><p>Controls how sharp or broad the reflections appear.</p></div><b>02</b></article>
+          <article class="map-ref"><span class="map-swatch swatch-normal"></span><div><strong>Normal</strong><p>Adds small-scale surface direction detail without changing geometry.</p></div><b>03</b></article>
+          <article class="map-ref"><span class="map-swatch swatch-height"></span><div><strong>Height / Displacement</strong><p>Provides height information for surface relief or displacement.</p></div><b>04</b></article>
+        </div>
+        <p class="workflow-note">Note: this library tracks files and map availability. It does not validate colour space, bit depth, scale, or renderer-specific node settings.</p>
+      </section>
+      <footer class="footer"><span>MATERIAL VAULT <span class="footer-dot">·</span> MADE FOR THE MATERIAL-MINDED</span><span>YOUR FILES STAY ON YOUR DEVICE</span></footer>
+    </main>
+  </div>
+
+  <dialog id="materialDialog" class="material-dialog">
+    <form id="materialForm" method="dialog">
+      <div class="dialog-head"><div><div class="eyebrow">LIBRARY ENTRY</div><h2 id="dialogTitle">Add a material</h2></div><button class="icon-button" id="closeDialog" type="button" aria-label="Close dialog">×</button></div>
+      <div class="form-grid">
+        <label class="field full-field">Material name <span>*</span><input id="materialName" name="name" maxlength="70" required placeholder="e.g. Light Oak – Brushed"></label>
+        <label class="field">Category<select id="materialCategory" name="category"><option>Wood</option><option>Stone</option><option>Fabric</option><option>Tile</option><option>Metal</option><option>Concrete</option><option>Other</option></select></label>
+        <label class="field">Resolution<select id="materialResolution" name="resolution"><option>1K</option><option selected>2K</option><option>4K</option><option>8K</option><option>16K</option><option>Unknown</option></select></label>
+        <label class="field full-field">Tags <input id="materialTags" name="tags" placeholder="oak, warm, floor (comma separated)"></label>
+        <div class="field full-field"><span class="field-label">Available maps</span><div class="map-checks">
+          <label><input type="checkbox" name="baseColor" checked> Base Color</label>
+          <label><input type="checkbox" name="roughness"> Roughness</label>
+          <label><input type="checkbox" name="normal"> Normal</label>
+          <label><input type="checkbox" name="height"> Height / Displacement</label>
+        </div></div>
+        <label class="field full-field">Preview image <input id="materialImage" type="file" accept="image/png,image/jpeg,image/webp"><small>Optional. Stored locally in this browser; use a small JPG or WebP for best results.</small></label>
+        <label class="field full-field">Notes <textarea id="materialNotes" rows="3" maxlength="500" placeholder="Scale, source, intended use, or setup notes…"></textarea></label>
+      </div>
+      <div class="dialog-actions"><button class="btn btn-quiet" id="cancelDialog" type="button">Cancel</button><button class="btn btn-primary" type="submit">Save material</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
